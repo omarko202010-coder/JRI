@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JRI // The Jim Cramer Reverse Index</title>
+  <meta name="description" content="Fade the pick. Community desk for The Jim Cramer Reverse Index. Parody. Not financial advice." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0b0f0c;
+      --panel: #12180f;
+      --panel2: #0e1410;
+      --gold: #c4a35a;
+      --gold2: #e8d7a2;
+      --red: #ff3b3b;
+      --green: #39ff14;
+      --muted: #8c9786;
+      --line: #2a3324;
+      --paper: #d7c7a2;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, sans-serif;
+      background:
+        linear-gradient(180deg, rgba(11,15,12,.92), rgba(11,15,12,.96)),
+        repeating-linear-gradient(0deg, transparent, transparent 23px, rgba(57,255,20,.03) 24px);
+      background-color: var(--bg);
+      color: #e7efe4;
+    }
+    a { color: var(--gold2); text-decoration: none; }
+    .tape {
+      background: #000;
+      color: var(--green);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12px;
+      letter-spacing: .08em;
+      border-bottom: 1px solid #163014;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .tape span {
+      display: inline-block;
+      padding: 8px 0;
+      animation: tick 28s linear infinite;
+    }
+    @keyframes tick { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 28px;
+      border-bottom: 2px solid var(--gold);
+      position: sticky; top: 0;
+      background: #0a0e0b;
+      z-index: 10;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; font-family: "Anton", Impact, sans-serif; letter-spacing: .06em; font-size: 26px; color: var(--gold2); }
+    .brand small { display: block; font-family: "IBM Plex Mono", monospace; font-size: 10px; color: var(--green); letter-spacing: .18em; }
+    .brand { overflow: visible; } .brand img { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; object-position: center; padding: 0; border: 2px solid var(--gold); background: #0a0e0b; display:block; }
+    nav a { margin-left: 18px; font-size: 12px; color: var(--paper); letter-spacing: .12em; text-transform: uppercase; }
+    .head-links { display: flex; align-items: center; gap: 12px; }
+    .icon-link {
+      width: 38px; height: 38px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      background: #0a0e0b; border: 1px solid #2a3324; color: var(--gold2);
+      transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+    }
+    .icon-link svg { width: 16px; height: 16px; display: block; }
+    .icon-link:hover { border-color: var(--gold); box-shadow: 0 0 14px rgba(196,163,90,.35); transform: translateY(-1px); }
+    .trade-pill {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--green); color: #071006; font-weight: 700;
+      padding: 9px 8px 9px 16px; border-radius: 999px;
+      font-family: "IBM Plex Mono", monospace; font-size: 12px; letter-spacing: .04em;
+      transition: filter .2s ease, transform .2s ease;
+    }
+    .trade-pill:hover { filter: brightness(1.08); transform: translateY(-1px); }
+    .trade-pill .arrow {
+      width: 24px; height: 24px; border-radius: 50%; background: #071006;
+      display: flex; align-items: center; justify-content: center; color: var(--green);
+    }
+    .trade-pill .arrow svg { width: 13px; height: 13px; }
+    .hero-banner { width: 100%; height: auto; max-height: none; display: block; object-fit: contain; background: #000; border-bottom: 2px solid var(--gold); }
+    .coin { width: min(400px, 100%); display: block; margin: 0 auto; filter: drop-shadow(0 18px 30px rgba(0,0,0,.55)); }
+    .hero {
+      padding: 48px 28px 20px; max-width: 1120px; margin: 0 auto;
+      display: grid; grid-template-columns: 1.1fr .9fr; gap: 36px; align-items: center;
+    }
+    h1 {
+      font-family: "Anton", Impact, sans-serif;
+      font-size: clamp(46px, 7vw, 78px);
+      line-height: .88; margin: 8px 0 14px; color: var(--gold2);
+    }
+    .tag { color: var(--green); font-family: "IBM Plex Mono", monospace; font-weight: 600; letter-spacing: .18em; font-size: 11px; }
+    .lead { color: var(--muted); font-size: 16px; max-width: 540px; }
+    .ca-box {
+      margin-top: 22px; background: #070a07; border: 1px solid var(--gold);
+      padding: 12px 14px; font-family: "IBM Plex Mono", monospace; font-size: 12px;
+      display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+    }
+    button, .btn {
+      background: var(--gold); color: #111; border: 0; font-weight: 700;
+      padding: 9px 12px; cursor: pointer; font-size: 12px;
+      font-family: "IBM Plex Mono", monospace; letter-spacing: .06em;
+    }
+    .btn.ghost { background: transparent; color: var(--gold2); border: 1px solid var(--gold); }
+    .metrics {
+      max-width: 1120px; margin: 8px auto 36px; padding: 0 28px;
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+    }
+    .card {
+      position: relative;
+      background: linear-gradient(180deg, var(--panel), var(--panel2));
+      border: 1px solid var(--line);
+      padding: 16px 18px;
+      overflow: hidden;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .card::before {
+      content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--gold2), var(--gold));
+      box-shadow: 0 0 12px rgba(196,163,90,.5);
+    }
+    .card::after {
+      content: ""; position: absolute; bottom: 9px; right: 9px; width: 10px; height: 10px;
+      border-right: 1px solid rgba(196,163,90,.45); border-bottom: 1px solid rgba(196,163,90,.45);
+    }
+    .card:hover { transform: translateY(-2px); box-shadow: 0 16px 34px -18px rgba(0,0,0,.65), 0 0 0 1px rgba(196,163,90,.25); }
+    .card h3 { margin: 0; font-size: 11px; color: var(--paper); text-transform: uppercase; letter-spacing: .14em; font-family: "IBM Plex Mono", monospace; }
+    .card .val { font-family: "IBM Plex Mono", monospace; font-size: 24px; margin-top: 10px; font-weight: 700; color: var(--green); text-shadow: 0 0 14px rgba(57,255,20,.28); font-variant-numeric: tabular-nums; }
+    .up { color: var(--green); text-shadow: 0 0 8px rgba(57,255,20,.4); } .down { color: var(--red); text-shadow: 0 0 8px rgba(255,59,59,.4); }
+    section { max-width: 1120px; margin: 0 auto 44px; padding: 0 28px; }
+    h2 { font-family: "Anton", Impact, sans-serif; font-size: 34px; color: var(--gold2); margin: 0 0 8px; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    iframe { width: 100%; height: 560px; border: 1px solid var(--gold); background: transparent; }
+    footer { border-top: 2px solid var(--gold); padding: 24px; color: #6f7768; font-size: 12px; text-align: center; background: #070a07; }
+    .disclaimer { color: #8b9384; font-size: 13px; line-height: 1.6; }
+
+    .term {
+      max-width: 1120px; margin: 8px auto 40px; padding: 0 28px;
+    }
+    .term-box {
+      position: relative;
+      background: #020402; border: 1px solid #3a5a2a;
+      box-shadow:
+        inset 0 0 46px rgba(57,255,20,.05),
+        0 0 0 1px rgba(196,163,90,.08),
+        0 24px 60px -26px rgba(0,0,0,.85),
+        0 0 44px -14px rgba(57,255,20,.12);
+      font-family: "IBM Plex Mono", monospace; color: #7CFF6B;
+      overflow: hidden;
+    }
+    .term-box::after {
+      content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 1;
+      background: repeating-linear-gradient(0deg, rgba(57,255,20,.03) 0px, rgba(57,255,20,.03) 1px, transparent 1px, transparent 3px);
+      mix-blend-mode: overlay; opacity: .6;
+    }
+    .term-bar {
+      display:flex; justify-content:space-between; align-items:center;
+      background: linear-gradient(180deg, #142812, #0a150a); color: var(--gold2); padding: 10px 14px; font-size: 12px; letter-spacing:.12em;
+      border-bottom: 1px solid #3a5a2a; font-family: "Anton", Impact, sans-serif; font-size: 19px;
+      position: relative; z-index: 2;
+    }
+    .term-bar .live { color:#39ff14; font-family: "IBM Plex Mono", monospace; font-size:11px; letter-spacing: .1em; }
+    .term-bar .live:before { content:"●"; display:inline-block; margin-right:6px; animation: livepulse 1.6s ease-in-out infinite; }
+    @keyframes livepulse { 0%,100% { opacity:1; text-shadow:0 0 7px #39ff14; } 50% { opacity:.35; text-shadow:0 0 1px #39ff14; } }
+
+    .term-metrics {
+      position: relative; z-index: 2;
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      background: #16260f; gap: 1px;
+      border-bottom: 1px solid #3a5a2a;
+    }
+    .term-metrics .mtile {
+      position: relative; overflow: hidden;
+      background: #040704; padding: 16px 18px;
+      transition: background .2s ease;
+    }
+    .term-metrics .mtile:hover { background: #081208; }
+    .term-metrics .mtile::before {
+      content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent); opacity: .55;
+    }
+    .term-metrics .mlabel { font-family: "IBM Plex Mono", monospace; font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: #6f8a63; }
+    .term-metrics .mvalue { font-family: "IBM Plex Mono", monospace; font-weight: 600; font-size: 21px; margin-top: 7px; color: #d9ffcf; font-variant-numeric: tabular-nums; text-shadow: 0 0 14px rgba(57,255,20,.22); }
+    .term-metrics .mvalue.gold { color: var(--gold2); text-shadow: 0 0 14px rgba(196,163,90,.3); }
+    .term-metrics .msub { margin-top: 6px; font-size: 11px; font-family: "IBM Plex Mono", monospace; color: #6f8a63; }
+    .mchips { margin-top: 8px; display: flex; gap: 6px; flex-wrap: wrap; }
+    .mchips .chip {
+      font-family: "IBM Plex Mono", monospace; font-size: 10.5px; color: #6f8a63;
+      background: #0a140a; border: 1px solid #1d3318; border-radius: 4px; padding: 3px 7px;
+      letter-spacing: .04em;
+    }
+    .mchips .chip b { font-weight: 600; margin-left: 3px; color: #9dff8a; }
+    .mchips .chip b.pos { color: var(--green); }
+    .mchips .chip b.neg { color: var(--red); }
+
+    table.term-table { position: relative; z-index: 2; width:100%; border-collapse: collapse; font-size: 13px; }
+    table.term-table th { text-align:left; color:#9dff8a; font-weight:600; padding:9px 12px; letter-spacing:.1em; text-transform:uppercase; font-size:10.5px; background:#08130a; border-bottom:1px solid #1d3318; }
+    table.term-table td { padding:8px 12px; border-bottom:1px solid #132010; font-variant-numeric: tabular-nums; transition: background .15s ease; }
+    table.term-table tbody tr:nth-child(even) td { background: rgba(57,255,20,.02); }
+    table.term-table tr:hover td { background: rgba(57,255,20,.07); box-shadow: inset 0 0 22px rgba(57,255,20,.08); }
+    .pos { color:#39ff14; text-shadow: 0 0 6px rgba(57,255,20,.35); } .neg { color:#ff4d4d; text-shadow: 0 0 6px rgba(255,77,77,.35); }
+    .sym { color: var(--gold2); font-weight:700; letter-spacing:.03em; position:relative; padding-left:20px; }
+    .sym::before { content:""; position:absolute; left:12px; top:50%; transform:translateY(-50%); width:5px; height:5px; border-radius:50%; background: var(--gold); box-shadow: 0 0 7px var(--gold); }
+    canvas.spark { width: 76px; height: 22px; display: block; }
+    .term-chart {
+      position: relative; z-index: 2;
+      border-top: 1px solid #3a5a2a; padding: 16px 18px 18px;
+      display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: end;
+      background: radial-gradient(ellipse at top left, rgba(57,255,20,.05), transparent 62%);
+    }
+    .term-chart .readout { font-family: "Anton", Impact, sans-serif; }
+    .term-chart .readout .px { font-size: 30px; color: var(--gold2); line-height: 1; text-shadow: 0 0 16px rgba(196,163,90,.3); }
+    .term-chart .readout .px small { font-family: "IBM Plex Mono", monospace; font-size: 11px; color: var(--muted); letter-spacing: .1em; display:block; margin-bottom:4px; }
+    .term-chart .readout .chg { font-family: "IBM Plex Mono", monospace; font-size: 13px; margin-top: 4px; }
+    #jriChart { width: 100%; height: 130px; display: block; }
+    .chart-wrap { min-width: 0; }
+    @media (max-width: 860px) {
+      .term-chart { grid-template-columns: 1fr; }
+      .term-metrics { grid-template-columns: repeat(2, 1fr); }
+      .term-table th:nth-child(5), .term-table td:nth-child(5),
+      .term-table th:nth-child(7), .term-table td:nth-child(7) { display: none; }
+    }
+    @media (max-width: 860px) {
+      .hero, .metrics, .grid2 { grid-template-columns: 1fr; }
+      header { flex-wrap: wrap; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="tape"><span>
+    JRI DESK ◆ SPX 7619.98 −0.48% ◆ DJI 52421 −0.29% ◆ NASD 26186 −0.56% ◆ VIX 17.10 +8% ◆ US10Y 4.97% ◆ DXY 99.64 ◆ WTI 103.7 +2% ◆ GOLD 4288 −1.4% ◆ BTC 77.2k ◆ FADE THE PICK ◆ 
+    JRI DESK ◆ SPX 7619.98 −0.48% ◆ DJI 52421 −0.29% ◆ NASD 26186 −0.56% ◆ VIX 17.10 +8% ◆ US10Y 4.97% ◆ DXY 99.64 ◆ WTI 103.7 +2% ◆ GOLD 4288 −1.4% ◆ BTC 77.2k ◆ FADE THE PICK ◆ 
+  </span></div>
+  <header>
+    <div class="brand">
+      <img src="logo-coin.png" alt="Jim Cramer Reverse Index coin" />
+      <div>JRI<div><small>TRADING DESK // PARODY</small></div></div>
+    </div>
+    <div class="head-links">
+      <a class="icon-link" href="https://app.long.xyz/tokens/0xe20165dfbe9e7c754a698550c0bed279294e1e18" target="_blank" rel="noopener" aria-label="Buy JRI">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 17 9 11 13 15 21 6"></polyline><polyline points="14 6 21 6 21 13"></polyline></svg>
+      </a>
+      <a class="icon-link" href="https://x.com/BooyahInverse" target="_blank" rel="noopener" aria-label="JRI on X">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2H21.5l-7.5 8.57L23 22h-6.9l-5.4-6.59L4.5 22H1.24l8.02-9.17L1 2h7.06l4.88 6.03L18.244 2Zm-1.21 18.13h1.83L7.06 3.77H5.1l11.93 16.36Z"/></svg>
+      </a>
+      <a class="trade-pill" href="https://app.long.xyz/tokens/0xe20165dfbe9e7c754a698550c0bed279294e1e18" target="_blank" rel="noopener">
+        Trade $JRI
+        <span class="arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+        </span>
+      </a>
+      <nav style="margin-left: 8px;">
+        <a href="#token">Tape</a>
+        <a href="#stamp">Cash mkt</a>
+        <a href="#chart">Chart</a>
+        <a href="#how">Desk rules</a>
+      </nav>
+    </div>
+  </header>
+
+  <img class="hero-banner" src="banner.jpg" alt="The Jim Cramer Reverse Index banner" />
+  <div class="hero">
+    <div>
+      <div class="tag">PARODY / COMMENTARY · UNAFFILIATED</div>
+      <h1>THE JIM CRAMER<br>REVERSE INDEX</h1>
+      <p class="lead">Floor joke with a contract address. When the table gets pounded, the desk fades it. When the panic hits, the desk grins.</p>
+      <div class="ca-box">
+        <span id="ca">0xe20165dfbe9e7c754a698550c0bed279294e1e18</span>
+        <button onclick="copyCA()">COPY CA</button>
+        <a class="btn ghost" id="dexLink" target="_blank" rel="noopener">DEXSCREENER</a>
+      </div>
+    </div>
+    <div>
+      <img class="coin" src="logo.png" alt="Reverse Index gold clown coin" />
+      <div class="card" style="margin-top:14px">
+        <h3>Last print</h3>
+        <div class="val" id="price">Loading…</div>
+        <p class="disclaimer" id="tokenMeta">Pulling DexScreener for the contract.</p>
+      </div>
+    </div>
+  </div>
+
+  <section class="term" id="token">
+    <div class="term-box">
+      <div class="term-bar">JRI LIVE TERMINAL <span class="live" id="termClock">CONNECTING</span></div>
+
+      <div class="term-metrics">
+        <div class="mtile">
+          <div class="mlabel">JRI · Last</div>
+          <div class="mvalue gold" id="mPrice">—</div>
+          <div class="mchips">
+            <span class="chip">6H <b id="mChg6">—</b></span>
+            <span class="chip">24H <b id="mChg24">—</b></span>
+            <span class="chip">1W <b id="mChg1w">—</b></span>
+          </div>
+        </div>
+        <div class="mtile">
+          <div class="mlabel">Market cap</div>
+          <div class="mvalue" id="mCap">—</div>
+          <div class="msub" id="mVenue">pulling token…</div>
+        </div>
+        <div class="mtile">
+          <div class="mlabel">Liquidity</div>
+          <div class="mvalue" id="mLiq">—</div>
+          <div class="msub"><span id="mPair">—</span> · <span id="mChain">—</span></div>
+        </div>
+        <div class="mtile">
+          <div class="mlabel">Vol 24h · txns</div>
+          <div class="mvalue" id="mVol">—</div>
+          <div class="msub" id="mTx">—</div>
+        </div>
+      </div>
+
+      <div class="term-chart">
+        <div class="chart-wrap">
+          <canvas id="jriChart" width="900" height="130"></canvas>
+        </div>
+        <div class="readout">
+          <div class="px"><small id="jriChartLabel">JRI · LAST 24H</small><span id="jriChartPrice">—</span></div>
+          <div class="chg" id="jriChartChg">collecting ticks…</div>
+        </div>
+      </div>
+
+      <table class="term-table">
+        <thead><tr><th>SYMBOL</th><th>LAST</th><th>6H</th><th>24H</th><th>1W</th><th>24H CHART</th><th>NOTE</th></tr></thead>
+        <tbody id="termBody">
+          <tr data-sym="^GSPC"><td class="sym">SPX</td><td>—</td><td>—</td><td>—</td><td>—</td><td><canvas class="spark" width="76" height="22"></canvas></td><td>S&amp;P 500</td></tr>
+          <tr data-sym="^DJI"><td class="sym">DJI</td><td>—</td><td>—</td><td>—</td><td>—</td><td><canvas class="spark" width="76" height="22"></canvas></td><td>Dow</td></tr>
+          <tr data-sym="^IXIC"><td class="sym">COMP</td><td>—</td><td>—</td><td>—</td><td>—</td><td><canvas class="spark" width="76" height="22"></canvas></td><td>Nasdaq</td></tr>
+          <tr data-sym="^RUT"><td class="sym">RTY</td><td>—</td><td>—</td><td>—</td><td>—</td><td><canvas class="spark" width="76" height="22"></canvas></td><td>Russell 2000</td></tr>
+          <tr data-sym="^VIX"><td class="sym">VIX</td><td>—</td><td>—</td><td>—</td><td>—</td><td><canvas class="spark" width="76" height="22"></canvas></td><td>vol</td></tr>
+          <tr data-sym="^TNX"><td class="sym">US10Y</td><td>—</td><td>—</td><td>—</td><td>—</td><td><canvas class="spark" width="76" height="22"></canvas></td><td>10-year yield x10</td></tr>
+          <tr data-sym="DX-Y.NYB"><td class="sym">DXY</td><td>—</td><td>—</td><td>—</td><td>—</td><td><canvas class="spark" width="76" height="22"></canvas></td><td>dollar index</td></tr>
+          <tr data-sym="CL=F"><td class="sym">WTI</td><td>—</td><td>—</td><td>—</td><td>—</td><td><canvas class="spark" width="76" height="22"></canvas></td><td>crude</td></tr>
+          <tr data-sym="BZ=F"><td class="sym">BRENT</td><td>—</td><td>—</td><td>—</td><td>—</td><td><canvas class="spark" width="76" height="22"></canvas></td><td>brent</td></tr>
+          <tr data-sym="GC=F"><td class="sym">GOLD</td><td>—</td><td>—</td><td>—</td><td>—</td><td><canvas class="spark" width="76" height="22"></canvas></td><td>comex</td></tr>
+          <tr data-sym="BTC-USD"><td class="sym">BTC</td><td>—</td><td>—</td><td>—</td><td>—</td><td><canvas class="spark" width="76" height="22"></canvas></td><td>bitcoin</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="chart">
+    <h2>Blotter / chart</h2>
+    <iframe id="chartFrame" title="Dex chart" src="https://dexscreener.com/search?q=0xe20165dfbe9e7c754a698550c0bed279294e1e18"></iframe>
+  </section>
+
+  <section id="how">
+    <h2>Desk rules</h2>
+    <div class="grid2">
+      <div class="card">
+        <h3>The fade</h3>
+        <p>Watch Mad Money / @jimcramer. If he pounds the table, the desk fades it. If he panics, the desk grins. Meme first. Not a systematic fund.</p>
+      </div>
+      <div class="card">
+        <h3>What this is not</h3>
+        <p>Not Jim Cramer. Not CNBC. Not the old SJIM ETF. Not investment advice. Tokens can go to zero. Check the CA twice.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    JRI desk is a parody / commentary project. No affiliation with Jim Cramer, CNBC, NBCUniversal, NYSE, or any ETF issuer.
+    Nothing here is financial, legal, or tax advice. DYOR.
+  </footer>
+
+  <script>
+    const CA = "0xe20165dfbe9e7c754a698550c0bed279294e1e18";
+    const HISTORY_CAP = 60; // rolling ticks kept per symbol
+    const priceHistory = { JRI: [] };
+
+    function copyCA() {
+      navigator.clipboard.writeText(CA);
+      const b = event.target; b.textContent = "COPIED"; setTimeout(() => b.textContent = "COPY CA", 1200);
+    }
+
+    function usd(n) {
+      if (n == null || Number.isNaN(n)) return "—";
+      if (n >= 1e6) return "$" + (n/1e6).toFixed(2) + "M";
+      if (n >= 1e3) return "$" + (n/1e3).toFixed(2) + "K";
+      if (n >= 1) return "$" + n.toFixed(4);
+      return "$" + Number(n).toPrecision(4);
+    }
+
+    function fmtN(n) {
+      if (n == null || Number.isNaN(n)) return "—";
+      return n >= 1000 ? n.toLocaleString(undefined,{maximumFractionDigits:2}) : n.toFixed(2);
+    }
+
+    // ---- charting: plain canvas, no external libs ----
+    function drawSpark(canvas, data, positive) {
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      const w = canvas.width, h = canvas.height;
+      ctx.clearRect(0, 0, w, h);
+      if (!data || data.length < 2) return;
+      const min = Math.min(...data), max = Math.max(...data);
+      const range = (max - min) || Math.abs(min) * 0.001 || 1;
+      ctx.beginPath();
+      data.forEach((v, i) => {
+        const x = (i / (data.length - 1)) * (w - 2) + 1;
+        const y = h - 1 - ((v - min) / range) * (h - 2);
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      });
+      ctx.strokeStyle = positive ? "#39ff14" : "#ff4d4d";
+      ctx.lineWidth = 1.3;
+      ctx.stroke();
+    }
+
+    function drawJriChart() {
+      const canvas = document.getElementById("jriChart");
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      const w = canvas.width, h = canvas.height;
+      ctx.clearRect(0, 0, w, h);
+      ctx.strokeStyle = "rgba(57,255,20,0.08)";
+      ctx.lineWidth = 1;
+      for (let i = 1; i < 4; i++) {
+        const y = Math.round((h / 4) * i) + 0.5;
+        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+      }
+      const data = priceHistory.JRI;
+      if (!data || data.length < 2) {
+        ctx.fillStyle = "#3a5a2a";
+        ctx.font = "12px 'IBM Plex Mono', monospace";
+        ctx.fillText("collecting ticks…", 12, h / 2);
+        return;
+      }
+      const min = Math.min(...data), max = Math.max(...data);
+      const range = (max - min) || min * 0.001 || 1;
+      const positive = data[data.length - 1] >= data[0];
+      ctx.beginPath();
+      data.forEach((v, i) => {
+        const x = (i / (data.length - 1)) * (w - 8) + 4;
+        const y = h - 6 - ((v - min) / range) * (h - 12);
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      });
+      ctx.strokeStyle = positive ? "#39ff14" : "#ff4d4d";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.lineTo(w - 4, h - 4); ctx.lineTo(4, h - 4); ctx.closePath();
+      ctx.fillStyle = positive ? "rgba(57,255,20,0.08)" : "rgba(255,77,77,0.08)";
+      ctx.fill();
+    }
+
+    // ---- token data (dexscreener + geckoterminal for weekly/hourly) ----
+    let jriWeeklyCache = null, jriWeeklyCacheAt = 0;
+    let jriHourlyCache = null, jriHourlyCacheAt = 0;
+    const GT_NETWORK = { ethereum:"eth", bsc:"bsc", polygon:"polygon_pos", arbitrum:"arbitrum", base:"base", avalanche:"avax", optimism:"optimism", solana:"solana", fantom:"fantom" };
+
+    function setChip(el, val, suffix) {
+      if (!el) return;
+      if (val == null || Number.isNaN(val)) { el.textContent = "—"; el.className = ""; return; }
+      el.textContent = (val >= 0 ? "+" : "") + Number(val).toFixed(2) + "%" + (suffix || "");
+      el.className = val >= 0 ? "pos" : "neg";
+    }
+
+    async function gtFetch(path) {
+      const res = await fetch("https://api.geckoterminal.com/api/v2" + path);
+      if (!res.ok) throw new Error("gt " + res.status);
+      return res.json();
+    }
+
+    // best-effort 7-day change for the token via GeckoTerminal daily candles (cached 5 min)
+    async function jriWeeklyChange(pair) {
+      const now = Date.now();
+      if (jriWeeklyCache != null && now - jriWeeklyCacheAt < 300000) return jriWeeklyCache;
+      try {
+        const net = GT_NETWORK[pair.chainId];
+        if (!net || !pair.pairAddress) return null;
+        const j = await gtFetch(`/networks/${net}/pools/${pair.pairAddress}/ohlcv/day?aggregate=1&limit=8`);
+        const list = j?.data?.attributes?.ohlcv_list;
+        if (!list || list.length < 2) return null;
+        const newest = list[0][4], oldest = list[list.length - 1][4];
+        const chg = oldest ? ((newest - oldest) / oldest) * 100 : null;
+        jriWeeklyCache = chg; jriWeeklyCacheAt = now;
+        return chg;
+      } catch (e) { return null; }
+    }
+
+    // best-effort last-24h hourly closes for the token via GeckoTerminal (cached ~1 min)
+    async function jriHourlySeries(pair) {
+      const now = Date.now();
+      if (jriHourlyCache != null && now - jriHourlyCacheAt < 60000) return jriHourlyCache;
+      try {
+        const net = GT_NETWORK[pair.chainId];
+        if (!net || !pair.pairAddress) return null;
+        const j = await gtFetch(`/networks/${net}/pools/${pair.pairAddress}/ohlcv/hour?aggregate=1&limit=24`);
+        const list = j?.data?.attributes?.ohlcv_list;
+        if (!list || list.length < 2) return null;
+        const closes = list.map(c => c[4]).reverse(); // oldest -> newest
+        jriHourlyCache = closes; jriHourlyCacheAt = now;
+        return closes;
+      } catch (e) { return null; }
+    }
+
+    async function loadToken() {
+      try {
+        const res = await fetch("https://api.dexscreener.com/latest/dex/tokens/" + CA);
+        const data = await res.json();
+        const pair = (data.pairs || []).sort((a,b) => (b.liquidity?.usd||0) - (a.liquidity?.usd||0))[0];
+        if (!pair) {
+          document.getElementById("price").textContent = "Pair not indexed yet";
+          document.getElementById("tokenMeta").textContent = "DexScreener has no pair for this CA yet. Chart will still search the address.";
+          document.getElementById("mVenue").textContent = "not indexed yet";
+          return;
+        }
+        const priceNow = Number(pair.priceUsd);
+        const chg6 = pair.priceChange?.h6;
+        const chg24 = pair.priceChange?.h24;
+
+        document.getElementById("price").textContent = usd(priceNow);
+        document.getElementById("tokenMeta").textContent = (pair.baseToken?.symbol || "TOKEN") + " / " + (pair.quoteToken?.symbol || "") + " · " + (pair.dexId || "");
+        document.getElementById("mVenue").textContent = (pair.baseToken?.symbol || "TOKEN") + " / " + (pair.quoteToken?.symbol || "") + " · " + (pair.dexId || "");
+        document.getElementById("mPrice").textContent = usd(priceNow);
+        document.getElementById("mCap").textContent = usd(pair.marketCap || pair.fdv);
+        document.getElementById("mLiq").textContent = usd(pair.liquidity?.usd);
+        document.getElementById("mVol").textContent = usd(pair.volume?.h24);
+        document.getElementById("mPair").textContent = (pair.baseToken?.symbol || "") + "/" + (pair.quoteToken?.symbol || "");
+        document.getElementById("mChain").textContent = pair.chainId || "—";
+        document.getElementById("mTx").textContent = (pair.txns?.h24?.buys || 0) + (pair.txns?.h24?.sells || 0);
+
+        setChip(document.getElementById("mChg6"), chg6);
+        setChip(document.getElementById("mChg24"), chg24);
+        jriWeeklyChange(pair).then(chg1w => setChip(document.getElementById("mChg1w"), chg1w));
+
+        const url = pair.url || ("https://dexscreener.com/" + pair.chainId + "/" + pair.pairAddress);
+        document.getElementById("dexLink").href = url;
+        document.getElementById("chartFrame").src = url;
+
+        document.getElementById("jriChartPrice").textContent = usd(priceNow);
+        const chgEl2 = document.getElementById("jriChartChg");
+        chgEl2.textContent = (chg24 == null ? "session live" : (chg24 > 0 ? "+" : "") + Number(chg24).toFixed(2) + "% · 24h");
+        chgEl2.className = "chg " + (chg24 > 0 ? "pos" : chg24 < 0 ? "neg" : "");
+
+        // prefer a real last-24h hourly series; fall back to session accumulation
+        const hourly = await jriHourlySeries(pair);
+        const labelEl = document.getElementById("jriChartLabel");
+        if (hourly && hourly.length >= 2) {
+          priceHistory.JRI = hourly.slice(-24);
+          if (labelEl) labelEl.textContent = "JRI · LAST 24H";
+        } else if (!Number.isNaN(priceNow)) {
+          priceHistory.JRI.push(priceNow);
+          if (priceHistory.JRI.length > HISTORY_CAP) priceHistory.JRI.shift();
+          if (labelEl) labelEl.textContent = "JRI · SESSION";
+        }
+        drawJriChart();
+      } catch (e) {
+        document.getElementById("price").textContent = "Could not load Dex data";
+      }
+    }
+
+    // ---- index / commodity / crypto data (yahoo finance) ----
+    async function yahooFetch(sym, params) {
+      const raw = "https://query1.finance.yahoo.com/v8/finance/chart/" + encodeURIComponent(sym) + params;
+      let res;
+      try { res = await fetch(raw); } catch(e) { res = null; }
+      if (!res || !res.ok) {
+        res = await fetch("https://api.allorigins.win/raw?url=" + encodeURIComponent(raw));
+      }
+      return res.json();
+    }
+
+    async function yahooChart(sym, range, interval) {
+      const j = await yahooFetch(sym, `?range=${range}&interval=${interval}`);
+      const r = j.chart.result[0];
+      const ts = r.timestamp || [];
+      const closes = (r.indicators?.quote?.[0]?.close) || [];
+      return { ts, closes, meta: r.meta };
+    }
+
+    // 1-week change, refreshed every 5 minutes (slow-moving, low priority)
+    const weeklyChg = {};
+    async function seedWeekly() {
+      const rows = [...document.querySelectorAll("#termBody tr[data-sym]")];
+      await Promise.all(rows.map(async (row) => {
+        const sym = row.dataset.sym;
+        try {
+          const { ts, closes } = await yahooChart(sym, "1mo", "1d");
+          const pairs = ts.map((t,i) => ({ t, c: closes[i] })).filter(p => p.c != null);
+          if (pairs.length < 2) return;
+          const now = Date.now() / 1000;
+          const target = now - 7*24*3600;
+          const ref = pairs.find(p => p.t >= target) || pairs[0];
+          const last = pairs[pairs.length - 1].c;
+          weeklyChg[sym] = ref.c ? ((last - ref.c) / ref.c) * 100 : null;
+          setChip(row.children[4], weeklyChg[sym]);
+        } catch (e) {}
+      }));
+    }
+
+    // poll: 15m candles over 2 days gives us LAST, 6H change, 24H change and a true last-24h sparkline
+    async function loadTape() {
+      const rows = [...document.querySelectorAll("#termBody tr[data-sym]")];
+      document.getElementById("termClock").textContent = "LIVE " + new Date().toUTCString();
+      await Promise.all(rows.map(async (row) => {
+        const sym = row.dataset.sym;
+        try {
+          const { ts, closes, meta } = await yahooChart(sym, "2d", "15m");
+          const pairs = ts.map((t,i) => ({ t, c: closes[i] })).filter(p => p.c != null);
+          if (!pairs.length) return;
+          const now = Date.now() / 1000;
+          const last = meta.regularMarketPrice ?? pairs[pairs.length - 1].c;
+          const prevClose = meta.chartPreviousClose || meta.previousClose;
+
+          const win24 = pairs.filter(p => p.t >= now - 24*3600);
+          const win6 = pairs.filter(p => p.t >= now - 6*3600);
+          const chg24 = prevClose ? ((last - prevClose) / prevClose) * 100 : null;
+          const chg6 = win6.length >= 2 ? ((last - win6[0].c) / win6[0].c) * 100 : null;
+          const chart24 = (win24.length >= 2 ? win24 : pairs.slice(-40)).map(p => p.c);
+
+          row.children[1].textContent = fmtN(last);
+          setChip(row.children[2], chg6);
+          setChip(row.children[3], chg24);
+          if (weeklyChg[sym] != null) setChip(row.children[4], weeklyChg[sym]);
+
+          priceHistory[sym] = chart24;
+          drawSpark(row.querySelector("canvas.spark"), chart24, (chg24 == null ? true : chg24 >= 0));
+        } catch (e) {}
+      }));
+    }
+
+    document.getElementById("dexLink").href = "https://dexscreener.com/search?q=" + CA;
+    loadToken();
+    loadTape();
+    seedWeekly();
+    setInterval(() => { loadToken(); loadTape(); }, 30000);
+    setInterval(seedWeekly, 300000);
+  </script>
+</body>
+</html>
